@@ -41,25 +41,28 @@ __global__ void histGPU(float* d_numbers, int* d_hist, int n, int bins)
 
 int main(int argc, char *argv[])
 {
-    int totalToGenerate = 134217728;				// Generate 2^30 random numbers
-    curandGenerator_t gen;							// Cuda Random Number Generator
-	const int bins = 10000;							// Total number of bins
+	/* General variable declarations */
+    int totalToGenerate = 134217728;
+    curandGenerator_t gen;
+	const int bins = 10000;
 
-    float *d_RandomNumbers, *h_RandomNumbers;		// Declaration of pointers to generated numbers (both device, d_, and host, h_)
-	int *d_hist;									// Declaration of pointer to the histogram on the device
+	/* Pointer / array declarations  [device (d_*) host (h_*)]*/
+    float *d_RandomNumbers, *h_RandomNumbers;
+	int *d_hist;
 
-	int h_hist[bins] = {0};							//Initialise arrays to store calculated histograms on the CPU to zero (0)
+	// Histogram storage on host, initialised to zero (0)
+	int h_hist[bins] = {0};
 	int h_histCPU[bins] = {0};
 
 	/* Timer Declarations */
 
-	//Device
+	// Device
 	cudaEvent_t startGPU, stopGPU;
 	cudaEventCreate(&startGPU);
 	cudaEventCreate(&stopGPU);
 	float elapsedTimeGPU;
 
-	//Host
+	// Host
 	clock_t startCPU, stopCPU;
 	float elapsedTimeCPU;
 
